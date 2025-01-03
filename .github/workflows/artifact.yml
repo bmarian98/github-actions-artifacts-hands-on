@@ -2,7 +2,11 @@ name: Workflow Demo
 
 on: [push]
 
+env:
+  WORKFLOW: "Variable at the workflow level"
+
 jobs:
+  
   build:
     runs-on: ubuntu-latest
 
@@ -31,4 +35,25 @@ jobs:
         path: ./artifacts
     - name: Display content of the text file
       run: cat ./artifacts/hello.txt
-      
+    
+  job:
+    runs-on: ubuntu-latest
+    env:
+      JOB: "Variable at the job level"
+
+    steps:
+    - name: step level
+      env: 
+        STEP: "This variable is at the step level"
+      run: echo ${STEP}
+
+    - name: job level
+      run: echo ${JOB}
+    - name: workflow-var
+      run: echo ${WORKFLOW}
+
+    - name: vars
+      run: echo ${{ vars.VAR }}
+
+    - name: secrets
+      run:  echo ${{ secrets.SECRET }}
